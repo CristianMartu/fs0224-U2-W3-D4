@@ -1,6 +1,6 @@
-const URL_1 = 'https://api.pexels.com/v1/search?query=dog&per_page=9'
+const URL_1 = 'https://api.pexels.com/v1/search?query=cat&per_page=9'
 const URL_2 = 'https://api.pexels.com/v1/search?query=motorcycles&per_page=9'
-const URL_LABEL = 'https://api.pexels.com/v1/search?query='
+let URL_LABEL = 'https://api.pexels.com/v1/search?query='
 const API_KEY = 'qqEpxYtbfLSWcwuU3D5gcS4Anhmt4pYjeiIhpp9wlkzAzSooW97ARTKA'
 
 const editHide = () => {
@@ -18,18 +18,25 @@ const createCard = (card) => {
   div.classList.add('col-md-4', 'colToHide')
   div.innerHTML = `
             <div class="card mb-4 shadow-sm">
-            <img
-                src= ${card.src.original}
-                class="bd-placeholder-img card-img-top"
-                height = "450px"
-            />
-            <div class="card-body">
-                <h5 class="card-title">Lorem Ipsum</h5>
+            <a href="./pexels-detail.html?photos= ${card.id}">
+              <img
+                  src= ${card.src.original}
+                  class="bd-placeholder-img card-img-top"
+                  height = "400px"
+              />
+            </a>
+            <div class="card-body d-flex flex-column justify-content-between">
+              <div>
+                <a href="./pexels-detail.html?photos= ${card.id}">
+                  <h5 class="card-title">${card.photographer}</h5>
+                </a>
                 <p class="card-text">
-                This is a wider card with supporting text below as a natural
-                lead-in to additional content. This content is a little bit
-                longer.
+                  ${card.alt}
                 </p>
+                <p class="card-text">
+                  <a href="${card.photographer_url}">Link Page</a>
+                </p>
+              </div>
                 <div
                 class="d-flex justify-content-between align-items-center"
                 >
@@ -71,9 +78,8 @@ const createAlbum = (list) => {
 const handleBtn = async (url) => {
   try {
     const resp = await fetch(url, {
-      method: 'GET',
       headers: {
-        Authorization: `Bearer [${API_KEY}]`,
+        Authorization: API_KEY,
       },
     })
     const parsedBody = await resp.json()
@@ -87,7 +93,6 @@ const handleBtn = async (url) => {
 const handleSubmit = (event) => {
   event.preventDefault()
   const input = document.getElementById('inputText')
-  console.log(URL_LABEL + input.value)
   const url = URL_LABEL + input.value
   handleBtn(url)
 }
